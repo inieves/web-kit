@@ -38,7 +38,7 @@ services:
      - MYSQL_PASSWORD
     volumes:
      - $DB_CERTIFICATE_FOLDER:/etc/mysql/certs
-     - ./db:/var/lib/mysql/data
-     - ./logs/db:/var/log
+     - ./db:/var/lib/mysql
+     - ./logs/db:/var/log/mysql
     ports:
       - "3306:3306"
