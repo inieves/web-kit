@@ -1,5 +1,8 @@
 *~
 secrets/
+db/
+logs/
+
 vendor/
 node_modules/
 npm-debug.log
