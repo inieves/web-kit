@@ -15,7 +15,7 @@ RUN \
 	sed -i "s|user nginx;|user www;|g" /etc/nginx/nginx.conf && \
 	rm -f /var/cache/apk/*
 
-COPY ./nginx.conf /etc/nginx/default.conf
+COPY ./docker/web/nginx.conf /etc/nginx/default.conf
 
 # Define mountable directories.
 VOLUME ["/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/code", "/var/static"]
