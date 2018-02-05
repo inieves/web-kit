@@ -25,8 +25,6 @@ services:
       context: ./
       dockerfile: ./docker/php/Dockerfile
     volumes:
-     - $SSL_CERTIFICATE_FOLDER:/etc/mysql/certs
-     - ./db:/var/lib/mysql/data
      - ./code:/var/code
 
   db:
@@ -39,7 +37,7 @@ services:
      - MYSQL_USER
      - MYSQL_PASSWORD
     volumes:
-     - $SSL_CERTIFICATE_FOLDER:/etc/mysql/certs
+     - $DB_CERTIFICATE_FOLDER:/etc/mysql/certs
      - ./db:/var/lib/mysql/data
      - ./logs/db:/var/log
     ports:

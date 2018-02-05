@@ -3,7 +3,6 @@ FROM alpine:3.7
 RUN \
 	apk update && \
 	apk add mysql mysql-client netcat-openbsd && \
-	adduser -D -g 'fpm' fpm && \
 	rm -f /var/cache/apk/*
 
 COPY ./docker/db/startup.sh /startup.sh
