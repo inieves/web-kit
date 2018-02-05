@@ -11,8 +11,8 @@ services:
     volumes:
       - $SSL_CERTIFICATE_FOLDER:/etc/nginx/certs
       - ./logs/web:/var/log/nginx
-      - ./code:/var/code
-      - ./static:/var/static
+      - ./static:/var/www/static
+      - ./code:/var/www/code
     ports:
       - "8000:80"
       - "443:443"
@@ -25,7 +25,9 @@ services:
       context: ./
       dockerfile: ./docker/php/Dockerfile
     volumes:
-     - ./code:/var/code
+      - ./code:/var/www/code
+    depends_on:
+      - db
 
   db:
     build:
