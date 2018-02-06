@@ -221,9 +221,6 @@ RUN set -ex \
 RUN \
 	docker-php-ext-install mysqli && \
 	docker-php-ext-enable mysqli
-#	docker-php-ext-enable mysqli && \
-#	addgroup --gid 3000 --system app && \
-#	adduser --uid 3000 --system --disabled-login --disabled-password --gid 3000 app
 
 #EXPOSE 9000
 CMD ["php-fpm"]
