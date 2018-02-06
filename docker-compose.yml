@@ -9,10 +9,13 @@ services:
     environment:
      - NGINX_HOST_NAME
     volumes:
-      - $SSL_CERTIFICATE_FOLDER:/etc/nginx/certs
+      - "phpsocket:/sock"
+      - $SSL_CERTIFICATE_FOLDER:/etc/nginx/certs:ro
       - ./logs/web:/var/log/nginx
-      - ./static:/var/www/static
-      - ./code:/var/www/code
+      - ./static:/var/www/static:ro
+      - ./code:/var/www/code:ro
+    networks:
+      - backend-php
     ports:
       - "8000:80"
       - "443:443"
@@ -25,7 +28,10 @@ services:
       context: ./
       dockerfile: ./docker/php/Dockerfile
     volumes:
-      - ./code:/var/www/code
+      - "phpsocket:/sock"
+      - ./code:/var/www/code:ro
+    networks:
+      - backend-php
     depends_on:
       - db
 
@@ -42,5 +48,14 @@ services:
      - $DB_CERTIFICATE_FOLDER:/etc/mysql/certs
      - ./db:/var/lib/mysql
      - ./logs/db:/var/log/mysql
+    networks:
+      - backend-php
     ports:
       - "3306:3306"
+
+networks:
+    backend-php:
+        driver: bridge
+
+volumes:
+    phpsocket:

@@ -11,6 +11,9 @@ RUN \
 	rm -rf /var/www/html && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
+#	rm -rf /var/lib/apt/lists/* && \
+#	addgroup --gid 3000 --system app && \
+#	adduser --uid 3000 --system --disabled-login --disabled-password --gid 3000 app
 
 COPY ./docker/web/nginx.conf /etc/nginx/default.conf
 
