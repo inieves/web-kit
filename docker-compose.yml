@@ -12,7 +12,7 @@ services:
      - $WEB_SSL_CERTIFICATE_FOLDER/$CURRENT_ENV:/etc/nginx/certs:ro
      - ./logs/web:/var/log/nginx
      - ./static:/var/www/static:ro
-     - ./code:/var/www/code:ro
+     - ./code_php:/var/www/code_php:ro
      - "phpsocket:/sock"
     networks:
      - backend-php
@@ -34,7 +34,7 @@ services:
      - MYSQL_DATABASE
      - MYSQL_USER
     volumes:
-     - ./code:/var/www/code:ro
+     - ./code_php:/var/www/code_php:ro
      - "phpsocket:/sock"
     networks:
      - backend-php
