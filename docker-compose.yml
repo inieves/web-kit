@@ -7,7 +7,7 @@ services:
       dockerfile: ./docker/web/Dockerfile
     command: /bin/sh -c "envsubst '$$HOST_NAME' < /etc/nginx/default.conf > /etc/nginx/conf.d/default.conf && while ! nc -w 1 -z db 3306; do sleep 0.1; done; nginx -g 'daemon off;'"
     env_file:
-     - ./.env_${CURRENT_ENV}
+     - ./envs/.env_${CURRENT_ENV}
     volumes:
      - $WEB_SSL_CERTIFICATE_FOLDER/$CURRENT_ENV:/etc/nginx/certs:ro
      - ./logs/web:/var/log/nginx
