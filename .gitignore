@@ -4,4 +4,4 @@
 /.env*
 
 # IGNORE PROD SECRETS
-/config/private/**/prod/*
+/config/private
