@@ -1,5 +1,9 @@
 *~
-/secrets/
 /db/
 /logs/
 /.env*
+
+# IGNORE PROD SECRETS
+/secrets/envs_private/db/prod
+/secrets/SSL/db/prod
+/secrets/SSL/web/prod
