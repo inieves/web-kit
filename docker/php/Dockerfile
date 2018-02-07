@@ -219,6 +219,8 @@ RUN set -ex \
 	} | tee php-fpm.d/zz-docker.conf
 
 RUN \
+	docker-php-ext-install mysqli && \
+	docker-php-ext-enable mysqli && \
 	curl -sS https://getcomposer.org/installer | php && \
 	mv composer.phar /usr/local/bin/composer
 
