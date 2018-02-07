@@ -11,9 +11,9 @@ services:
       - ${TARGET_SPECIFIC_PUBLIC_ENV_FOLDER}/${CURRENT_ENV}/${TARGET_SPECIFIC_PUBLIC_ENV_FILE}
     volumes:
       - ${WEB_SSL_CERTIFICATE_FOLDER}/${CURRENT_ENV}:/etc/nginx/certs:ro
-      - ./logs/web:/var/log/nginx
-      - ./static:/var/www/static:ro
-      - ./code_php:/var/www/code_php:ro
+      - ./app/logs/web:/var/log/nginx
+      - ./app/static:/var/www/static:ro
+      - ./app/code/php:/var/www/code_php:ro
       - "phpsocket:/sock"
     networks:
       - backend-php
@@ -35,7 +35,7 @@ services:
       - MYSQL_DATABASE
       - MYSQL_USER
     volumes:
-      - ./code_php:/var/www/code_php:ro
+      - ./app/code/php:/var/www/code_php:ro
       - "phpsocket:/sock"
     networks:
       - backend-php
@@ -54,8 +54,8 @@ services:
       - MYSQL_USER
     volumes:
       - ${DB_SSL_CERTIFICATE_FOLDER}/${CURRENT_ENV}:/etc/mysql/certs:ro
-      - ./db:/var/lib/mysql
-      - ./logs/db:/var/log/mysql
+      - ./app/db:/var/lib/mysql
+      - ./app/logs/db:/var/log/mysql
     networks:
       - backend-php
     ports:
