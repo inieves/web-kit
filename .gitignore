@@ -1,6 +1,6 @@
 *~
-/db/
-/logs/
+/app/db/
+/app/logs/
 /.env*
 
 # IGNORE PROD SECRETS
