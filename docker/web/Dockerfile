@@ -5,7 +5,7 @@ RUN \
 	set -x && \
 	apt-get update && \
 	apt-get install -y --no-install-recommends nginx gettext-base netcat && \
-	mkdir /var/www/code_php && \
+	mkdir -p /var/www/code/php && \
 	mkdir /var/www/static && \
 	mkdir /etc/nginx/certs && \
 	rm -rf /var/www/html && \

@@ -14,10 +14,10 @@ services:
       - ./docker/web/nginx.conf:/etc/nginx/conf.d/default.conf.raw
       - ./app/logs/web:/var/log/nginx
       - ./app/static:/var/www/static:ro
-      - ./app/code/php:/var/www/code_php:ro
-      - "phpsocket:/sock"
+      - ./app/code/php:/var/www/code/php:ro
+      - "sockets-volume-web-to-php:/sockets/web-to-php"
     networks:
-      - backend-php
+      - backend-php-network
     ports:
       - "8000:80"
       - "443:443"
@@ -33,14 +33,16 @@ services:
       - ${DB_PASSWORD_FOLDER}/${CURRENT_ENV}/${DB_USER_PASSWORD_FILE}
     environment:
       - MYSQL_HOST
+      - MYSQL_SOCKET
       - MYSQL_DATABASE
       - MYSQL_USER
     volumes:
       - ./docker/php/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
-      - ./app/code/php:/var/www/code_php:ro
-      - "phpsocket:/sock"
+      - ./app/code/php:/var/www/code/php:ro
+      - "sockets-volume-web-to-php:/sockets/web-to-php"
+      - "sockets-volume-php-to-db:/sockets/php-to-db"
     networks:
-      - backend-php
+      - backend-php-network
     depends_on:
       - db
 
@@ -59,14 +61,16 @@ services:
       - ./docker/db/my.cnf:/etc/mysql/conf.d/mysql.cnf
       - ./app/db:/var/lib/mysql
       - ./app/logs/db:/var/log/mysql
+      - "sockets-volume-php-to-db:/var/run/mysqld"
     networks:
-      - backend-php
+      - backend-php-network
     ports:
       - "3306:3306"
 
 networks:
-  backend-php:
+  backend-php-network:
     driver: bridge
 
 volumes:
-  phpsocket:
+  sockets-volume-web-to-php:
+  sockets-volume-php-to-db:

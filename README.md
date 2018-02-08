@@ -34,6 +34,7 @@ Docker Info
 Contact Info
 
 * host: localhost
+* socket: /var/run/mysqld/mysqld.sock
 * port: 3306
 * name: app
 
@@ -68,5 +69,5 @@ Docker Info
 
 Contact Info
 
-* socket: unix:/sock/docker.sock
+* socket: /sockets/web-to-php/docker.sock
 * port: none (not listening on 9000)
