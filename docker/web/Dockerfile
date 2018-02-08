@@ -12,10 +12,8 @@ RUN \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
-COPY ./docker/web/nginx.conf /etc/nginx/default.conf
-
 # Define mountable directories.
-VOLUME ["/etc/nginx/certs", "/var/log/nginx", "/var/www"]
+VOLUME ["/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www"]
 
 # Define working directory.
 WORKDIR /etc/nginx
