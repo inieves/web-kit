@@ -4,3 +4,6 @@
 
 # IGNORE PROD SECRETS
 /config/private
+
+# IGNORE MAC TURDS
+.DS_Store
