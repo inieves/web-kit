@@ -40,14 +40,24 @@ chmod 0644 /home/ian/.ssh/authorized_keys
 chmod 0644 /home/ian/.ssh/id_rsa.ian_at_linode.pub
 
 # ADD music GROUP
-adduser --group music
+addgroup music
 usermod -a -G music eugene
 usermod -a -G music ian
 
-# CLONE GIT REPO
+# PREPARE PERMISSIONS FOR GIT REPO
+mkdir -p /var/git/music
+chgrp gitusers /var/git/music
+chmod g+ws /var/git/music
+cd /var/git/music
+git init --bare --shared=group
+cd ..
+
+# PREPARE SSH FOR CLONE
 eval `ssh-agent -s`
 ssh-add ~/.ssh/id_rsa.ian_at_github
-git clone git@github.com:inieves/music.git ~/music
+
+# CLONE GIT REPO
+git clone git@github.com:inieves/music.git ./music
 
 # OPEN PORT 3306 FOR DOCKER
 # iptables -A INPUT -p tcp --dport 3306 --jump ACCEPT
