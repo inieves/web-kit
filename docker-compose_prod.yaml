@@ -4,18 +4,18 @@ services:
 
   web:
     environment:
-      - WEB_HOST_NAME=discopedia.com
-      - WEB_HOST_IP=172.104.17.40
+      - WEB_HOST_NAME=${PROD_WEB_HOST_NAME}
+      - WEB_HOST_IP=${PROD_WEB_HOST_IP}
     volumes:
-      - ${WEB_SSL_CERTIFICATE_FOLDER}/prod:/etc/nginx/certs:ro
+      - ${WEB_SSL_CERTIFICATE_FOLDER}/${PROD_FOLDER_NAME}:/etc/nginx/certs:ro
 
   php:
     env_file:
-      - ${DB_PASSWORD_FOLDER}/prod/${DB_USER_PASSWORD_FILE}
+      - ${DB_PASSWORD_FOLDER}/${PROD_FOLDER_NAME}/${DB_USER_PASSWORD_FILE}
 
   db:
     env_file:
-      - ${DB_PASSWORD_FOLDER}/prod/${DB_ROOT_PASSWORD_FILE}
-      - ${DB_PASSWORD_FOLDER}/prod/${DB_USER_PASSWORD_FILE}
+      - ${DB_PASSWORD_FOLDER}/${PROD_FOLDER_NAME}/${DB_ROOT_PASSWORD_FILE}
+      - ${DB_PASSWORD_FOLDER}/${PROD_FOLDER_NAME}/${DB_USER_PASSWORD_FILE}
     volumes:
-      - ${DB_SSL_CERTIFICATE_FOLDER}/prod:/etc/mysql/certs:ro
+      - ${DB_SSL_CERTIFICATE_FOLDER}/${PROD_FOLDER_NAME}:/etc/mysql/certs:ro
