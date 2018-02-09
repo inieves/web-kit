@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+
+  web:
+    environment:
+      - WEB_HOST_NAME=localhost
+      - WEB_HOST_IP=127.0.0.1
+    volumes:
+      - ${WEB_SSL_CERTIFICATE_FOLDER}/dev:/etc/nginx/certs:ro
+
+  php:
+    env_file:
+      - ${DB_PASSWORD_FOLDER}/dev/${DB_USER_PASSWORD_FILE}
+
+  db:
+    env_file:
+      - ${DB_PASSWORD_FOLDER}/dev/${DB_ROOT_PASSWORD_FILE}
+      - ${DB_PASSWORD_FOLDER}/dev/${DB_USER_PASSWORD_FILE}
+    volumes:
+      - ${DB_SSL_CERTIFICATE_FOLDER}/dev:/etc/mysql/certs:ro

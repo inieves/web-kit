@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+
+  web:
+    environment:
+      - WEB_HOST_NAME=discopedia.com
+      - WEB_HOST_IP=172.104.17.40
+    volumes:
+      - ${WEB_SSL_CERTIFICATE_FOLDER}/prod:/etc/nginx/certs:ro
+
+  php:
+    env_file:
+      - ${DB_PASSWORD_FOLDER}/prod/${DB_USER_PASSWORD_FILE}
+
+  db:
+    env_file:
+      - ${DB_PASSWORD_FOLDER}/prod/${DB_ROOT_PASSWORD_FILE}
+      - ${DB_PASSWORD_FOLDER}/prod/${DB_USER_PASSWORD_FILE}
+    volumes:
+      - ${DB_SSL_CERTIFICATE_FOLDER}/prod:/etc/mysql/certs:ro
