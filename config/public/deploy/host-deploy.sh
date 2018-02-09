@@ -39,6 +39,16 @@ chmod 0700 /home/ian/.ssh
 chmod 0644 /home/ian/.ssh/authorized_keys
 chmod 0644 /home/ian/.ssh/id_rsa.ian_at_linode.pub
 
+# ADD music GROUP
+adduser --group music
+usermod -a -G music eugene
+usermod -a -G music ian
+
+# CLONE GIT REPO
+eval `ssh-agent -s`
+ssh-add ~/.ssh/id_rsa.ian_at_github
+git clone git@github.com:inieves/music.git ~/music
+
 # OPEN PORT 3306 FOR DOCKER
 # iptables -A INPUT -p tcp --dport 3306 --jump ACCEPT
 # iptables-save > /etc/iptables/rules.v4
