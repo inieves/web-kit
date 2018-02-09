@@ -48,23 +48,38 @@ chgrp music /var/music && \
 chmod g+ws /var/music && \
 cd /var/music
 # git init --bare --shared=group
-# git init --shared=group
 
-# SCP IAN'S GITHUB PRIVATE KEY TO /home/ian/.ssh
-# scp .ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
-
-# PREPARE SSH FOR CLONE
-su ian
-
-eval `ssh-agent -s` && \
-ssh-add ~/.ssh/id_rsa.ian_at_github
+# SCP FROM IAN'S GITHUB PRIVATE KEY TO LINODE /home/ian/.ssh
+# scp ~/.ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
 
 # CLONE GIT REPO
-##git clone git@github.com:inieves/music.git /var/music
+su ian
+eval `ssh-agent -s` && \
+ssh-add ~/.ssh/id_rsa.ian_at_github
 git clone --shared git@github.com:inieves/music.git /var/music
+
+# CREATE SPACE FOR PRIVATE CREDENTIALS
+mkdir /var/music/config/private/prod
+
+# SCP FROM IAN'S SECURE SPACE TO LINODS
+#scp -r ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private/prod
+
+
+
+
+
+
 
 # OPEN PORT 3306 FOR DOCKER
 # iptables -A INPUT -p tcp --dport 3306 --jump ACCEPT
 # iptables-save > /etc/iptables/rules.v4
 
 # users must put their own github private keys in place
+
+
+
+# secure passwords
+# figure out why db logs arent working
+# figure out why nginx config isnt working
+
+
