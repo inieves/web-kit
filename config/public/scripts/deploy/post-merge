@@ -6,36 +6,19 @@
 
 echo 'START setting permissions'
 
-## SET OWNER TO ROOT
-sudo chown -R root /var/music
+## DOCKER
+sudo find /var/music/docker -type f | xargs sudo chmod ug=rw,o= && \
+sudo find /var/music/docker -type d | xargs sudo chmod g+w
 
-## PREVENT OTHER FROM READING ANY FILES
-sudo find /var/music -type f | xargs chmod ug=rw,o= && \
-sudo find /var/music -type d | xargs chmod g+w
+## CONFIG
+sudo find /var/music/config/public -type f | xargs sudo chmod ug=rw,o= && \
+sudo find /var/music/config/public -type d | xargs sudo chmod g+w
 
 # CODE
-sudo chgrp -R www-data /var/music/app/code && \
-sudo chmod -R g=rwx    /var/music/app/code
-
-## DB
-sudo chgrp -R mysql /var/music/app/db && \
-sudo chmod -R g=rwx /var/music/app/db && \
-sudo chgrp mysql    /var/music/docker/db/mysql.cnf
-
-## LOGS
-sudo chgrp -R mysql    /var/music/app/logs/db && \
-sudo chmod -R g=rwx    /var/music/app/logs/db && \
-sudo chgrp -R www-data /var/music/app/logs/web && \
-sudo chmod -R g=rwx    /var/music/app/logs/web
+sudo chmod -R g=rwx /var/music/app/code
 
 ## STATIC
-sudo chgrp -R www-data /var/music/app/static && \
-sudo chmod -R g=rwx    /var/music/app/static
-
-## CONFIG PRIVATE
-sudo find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
-sudo find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
-sudo find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
+sudo chmod -R g=rwx /var/music/app/static
 
 ## GIT HOOKS
 sudo chmod ug=rwx /var/music/.git/hooks/post-merge
