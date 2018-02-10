@@ -6,41 +6,37 @@
 
 echo 'START setting permissions'
 
-sudo su
-
 ## SET OWNER TO ROOT
-chown -R root /var/music
+sudo chown -R root /var/music
 
 ## PREVENT OTHER FROM READING ANY FILES
-find /var/music -type f | xargs chmod ug=rw,o= && \
-find /var/music -type d | xargs chmod g+w
+sudo find /var/music -type f | xargs chmod ug=rw,o= && \
+sudo find /var/music -type d | xargs chmod g+w
 
 # CODE
-chgrp -R www-data /var/music/app/code && \
-chmod -R g=rwx    /var/music/app/code
+sudo chgrp -R www-data /var/music/app/code && \
+sudo chmod -R g=rwx    /var/music/app/code
 
 ## DB
-chgrp -R mysql /var/music/app/db && \
-chmod -R g=rwx /var/music/app/db && \
-chgrp mysql    /var/music/docker/db/mysql.cnf
+sudo chgrp -R mysql /var/music/app/db && \
+sudo chmod -R g=rwx /var/music/app/db && \
+sudo chgrp mysql    /var/music/docker/db/mysql.cnf
 
 ## LOGS
-chgrp -R mysql    /var/music/app/logs/db && \
-chmod -R g=rwx    /var/music/app/logs/db && \
-chgrp -R www-data /var/music/app/logs/web && \
-chmod -R g=rwx    /var/music/app/logs/web
+sudo chgrp -R mysql    /var/music/app/logs/db && \
+sudo chmod -R g=rwx    /var/music/app/logs/db && \
+sudo chgrp -R www-data /var/music/app/logs/web && \
+sudo chmod -R g=rwx    /var/music/app/logs/web
 
 ## STATIC
-chgrp -R www-data /var/music/app/static && \
-chmod -R g=rwx    /var/music/app/static
+sudo chgrp -R www-data /var/music/app/static && \
+sudo chmod -R g=rwx    /var/music/app/static
 
 ## CONFIG PRIVATE
-find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
+sudo find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
+sudo find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
+sudo find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
 
 ## GIT HOOKS
-chmod ug=rwx /var/music/.git/hooks/post-merge
-
-echo 'END setting permissions'
+sudo chmod ug=rwx /var/music/.git/hooks/post-merge
 
