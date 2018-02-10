@@ -9,14 +9,14 @@ apt-get update && apt-get dist-upgrade -y && apt-get install -y --force-yes git 
 
 # PREPARE TO GET DOCKER
 apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common && \
-curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add - && \
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | apt-key add - && \
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable" && \
 apt-get update
 
 # GET DOCKER AND DOCKER COMPOSE
 apt-get install -y docker-ce && \
-sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
-sudo chmod +x /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
+chmod +x /usr/local/bin/docker-compose
 
 ########################
 # ADD USERS AND GROUPS #
@@ -36,7 +36,6 @@ echo 'eval `ssh-agent -s`' >> /home/eugene/.profile
 # ADD IAN
 adduser --disabled-password --gecos "" ian && \
 echo 'ian ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
-usermod -aG sudo ian && \
 mkdir /home/ian/.ssh && \
 echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+ANwxfP7t6UKITbuEGAWZa6GcMel43Wu8ILZoM7tatO5rlinSsmhzrOJCBwr5fsG9ztE2twf+YyZATf8n5FjE7PJB/TKw1oneQEsywLx2HFzWrSgwQlUKcyofCRicQKbXFIyb7nOBu+OhDZpJEyiJnkwGLvbDxrNAjO9NOR5v9V17ouaqG4kQrzYkOE6ywAHngZDwMrBhKQJ0K5vSDT4giAe5dVOqbiSwtQ2oyW6ZHdLovvwbFqPGTA9gqBJrJuU9JAho1lrUdD7DAoOS7xXgSC2B/V1DLPOtrINDDoax3LHLn9cfMqRnHV9wkWq1dJ01WKO82iCQvoXsP1nIGkIVNQJiJJcHYO+KUV4kWUsngizhuRap4Uih3pX8QR+BJdzrvYQA9HBoMgKU2+/PoisneedVlRqmWAMMzfYm3z7HuPVzBzQHU0Fir3GMN0p+BQE2fY7ZZS9j2vliWw3ZgbHpFCoaPG/HLciHchc+btTIy6s0CNvOL8MPfEHX2p0CDdY4q7i7Z9QR4FcoDFSR6d6L/VkzvckgEWQyrdTSp/DOflXAeRo0LnxaAMOJ/4HcPvq2L0SY9TmLQshzqP2zoCLKl10/63hjN6SyXOFY/oXT30Z4GC8D/OEuO80OCcylFWy71h6MN9STov7qbl+xB57ZG9rkGGQwvinkwxKhBRiuJQ== imnieves@gmail.com' >> /home/ian/.ssh/authorized_keys && \
 chown -R ian:ian /home/ian/.ssh && \
@@ -96,7 +95,39 @@ exit
 # FIX PERMISSIONS #
 ###################
 
-# use the script: post-update
+## SET OWNER TO ROOT
+chown -R root /var/music
+
+## PREVENT OTHER FROM READING ANY FILES
+find /var/music -type f | xargs chmod ug=rw,o= && \
+find /var/music -type d | xargs chmod g+w
+
+# CODE
+chgrp -R www-data /var/music/app/code && \
+chmod -R g=rwx    /var/music/app/code
+
+## DB
+chgrp -R mysql /var/music/app/db && \
+chmod -R g=rwx /var/music/app/db && \
+chgrp mysql    /var/music/docker/db/mysql.cnf
+
+## LOGS
+chgrp -R mysql    /var/music/app/logs/db && \
+chmod -R g=rwx    /var/music/app/logs/db && \
+chgrp -R www-data /var/music/app/logs/web && \
+chmod -R g=rwx    /var/music/app/logs/web
+
+## STATIC
+chgrp -R www-data /var/music/app/static && \
+chmod -R g=rwx    /var/music/app/static
+
+## CONFIG PRIVATE
+find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
+find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
+find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
+
+## GIT HOOKS
+chmod ug=rwx /var/music/.git/hooks/post-merge
 
 #########################################################
 # users must put their own github private keys in place #
