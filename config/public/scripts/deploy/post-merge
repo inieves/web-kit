@@ -40,3 +40,4 @@ sudo find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
 ## GIT HOOKS
 sudo chmod ug=rwx /var/music/.git/hooks/post-merge
 
+echo 'END setting permissions'
