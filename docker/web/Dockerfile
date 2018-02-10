@@ -10,7 +10,8 @@ RUN \
 	mkdir /etc/nginx/certs && \
 	rm -rf /var/www/html && \
 	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* && \
+	rm /etc/nginx/sites-enabled/default
 
 # Define mountable directories.
 VOLUME ["/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www"]
