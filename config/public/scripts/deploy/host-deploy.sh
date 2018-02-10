@@ -96,35 +96,7 @@ exit
 # FIX PERMISSIONS #
 ###################
 
-# SET OWNER TO ROOT
-chown -R root /var/music
-
-# PREVENT OTHER FROM READING ANY FILES
-#find /var/music -type f | xargs chmod o=
-
-# CODE
-chgrp -R www-data /var/music/app/code && \
-chmod -R g=rwx    /var/music/app/code
-
-## DB
-chgrp -R mysql /var/music/app/db && \
-chmod -R g=rwx /var/music/app/db && \
-chgrp mysql    /var/music/docker/db/mysql.cnf && \
-
-## LOGS
-chgrp -R mysql    /var/music/app/logs/db && \
-chmod -R g=rwx    /var/music/app/logs/db && \
-chgrp -R www-data /var/music/app/logs/web && \
-chmod -R g=rwx    /var/music/app/logs/web
-
-## STATIC
-chgrp -R www-data /var/music/app/static && \
-chmod -R g=rwx    /var/music/app/static
-
-## CONFIG PRIVATE
-find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
+# use the script: post-update
 
 #########################################################
 # users must put their own github private keys in place #
