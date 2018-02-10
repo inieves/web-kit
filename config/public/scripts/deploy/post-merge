@@ -6,6 +6,8 @@
 
 echo 'START setting permissions'
 
+sudo su
+
 ## SET OWNER TO ROOT
 chown -R root /var/music
 
