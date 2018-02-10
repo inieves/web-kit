@@ -49,7 +49,7 @@ services:
       - MYSQL_DATABASE
       - MYSQL_USER
     volumes:
-      - ./docker/db/my.cnf:/etc/mysql/conf.d/mysql.cnf
+      - ./docker/db/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
       - ./app/db:/var/lib/mysql
       - ./app/logs/db:/var/log/mysql
       - "sockets-volume-php-to-db:/var/run/mysqld"
