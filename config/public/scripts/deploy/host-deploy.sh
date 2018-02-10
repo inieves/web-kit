@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 # UPDATE BASIC SYSTEM
 apt-get update && apt-get dist-upgrade -y && apt-get install -y --force-yes git iptables-persistent emacs
 
@@ -38,9 +40,21 @@ chmod 0644 /home/ian/.ssh/id_rsa.ian_at_linode.pub && \
 echo 'eval `ssh-agent -s`' >> /home/ian/.profile
 
 # ADD music GROUP
-addgroup music && \
+# music group should always be gid 1002
+addgroup --system --gid 1002 music
+
+# ADD mysql GROUP for container compatibility
+# mysql group should always be gid 1005 to be compatible with db container
+groupadd --system --gid 1005 mysql && \
+useradd --system --gid 1005 --uid 1005 mysql
+
+# ADD IAN AND EUGENE TO ALL GROUPS
 usermod -a -G music eugene && \
-usermod -a -G music ian
+usermod -a -G mysql eugene && \
+usermod -a -G www-data eugene && \
+usermod -a -G music ian && \
+usermod -a -G mysql ian && \
+usermod -a -G www-data ian
 
 # PREPARE PERMISSIONS FOR GIT REPO
 mkdir -p /var/music && \
@@ -49,21 +63,28 @@ chmod g+ws /var/music && \
 cd /var/music
 # git init --bare --shared=group
 
-# SCP FROM IAN'S GITHUB PRIVATE KEY TO LINODE /home/ian/.ssh
-# scp ~/.ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
-
 # CLONE GIT REPO
 su ian
 eval `ssh-agent -s` && \
 ssh-add ~/.ssh/id_rsa.ian_at_github
 git clone --shared git@github.com:inieves/music.git /var/music
 
-# CREATE SPACE FOR PRIVATE CREDENTIALS
-mkdir /var/music/config/private/prod
+# FIX PERMISSIONS
+## DB
+chown -R mysql:mysql /var/music/app/logs/db
+chmod -R g=rw /var/music/app/logs/db
+
+
+chown -R mysql:mysql /var/music/app/db
+chmod -R g=rw     /var/music/app/db
+
+## WEB
+chown -R ian:www-data /var/music/app/code
+chown -R ian:www-data /var/music/app/static
+chown -R ian:www-data /var/music/app/logs/web
 
 # SCP FROM IAN'S SECURE SPACE TO LINODS
-#scp -r ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private/prod
-
+rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private
 
 
 
