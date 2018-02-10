@@ -6,19 +6,25 @@
 
 echo 'START setting permissions'
 
+## SET OWNER TO ROOT
+sudo chown -R root /var/music
+
+## PREVENT OTHER FROM READING ANY FILES
+sudo find /var/music -type f | xargs sudo chmod ug=rw,o= && \
+sudo find /var/music -type d | xargs sudo chmod g+w
+
+# CODE
+sudo chmod -R g=rwx    /var/music/app/code
+
+## STATIC
+sudo chmod -R g=rwx    /var/music/app/static
+
 ## DOCKER
 sudo find /var/music/docker -type f | xargs sudo chmod ug=rw,o= && \
 sudo find /var/music/docker -type d | xargs sudo chmod g+w
 
-## CONFIG
-sudo find /var/music/config/public -type f | xargs sudo chmod ug=rw,o= && \
-sudo find /var/music/config/public -type d | xargs sudo chmod g+w
-
-# CODE
-sudo chmod -R g=rwx /var/music/app/code
-
-## STATIC
-sudo chmod -R g=rwx /var/music/app/static
+## BASE DIRECTORY
+sudo chmod ug=rw,o= /var/music/*
 
 ## GIT HOOKS
 sudo chmod ug=rwx /var/music/.git/hooks/post-merge
