@@ -61,46 +61,40 @@ mkdir -p /var/music && \
 chgrp music /var/music && \
 chmod g+ws /var/music && \
 cd /var/music
-# git init --bare --shared=group
 
 # CLONE GIT REPO
 su ian
 eval `ssh-agent -s` && \
-ssh-add ~/.ssh/id_rsa.ian_at_github
+ssh-add ~/.ssh/id_rsa.ian_at_github && \
 git clone --shared git@github.com:inieves/music.git /var/music
-
-# FIX PERMISSIONS
-## DB
-chown -R mysql:mysql /var/music/app/logs/db
-chmod -R g=rw /var/music/app/logs/db
-
-
-chown -R mysql:mysql /var/music/app/db
-chmod -R g=rw     /var/music/app/db
-
-## WEB
-chown -R ian:www-data /var/music/app/code
-chown -R ian:www-data /var/music/app/static
-chown -R ian:www-data /var/music/app/logs/web
 
 # SCP FROM IAN'S SECURE SPACE TO LINODS
 rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private
 
+# FIX PERMISSIONS
+
+# CODE
+chgrp -R www-data /var/music/app/code
+chmod -R g=rwx    /var/music/app/code
+
+## DB
+chgrp -R mysql /var/music/app/db
+chmod -R g=rwx /var/music/app/db
+
+## LOGS
+chgrp -R mysql    /var/music/app/logs/db
+chmod -R g=rwx    /var/music/app/logs/db
+chgrp -R www-data /var/music/app/logs/web
+chmod -R g=rwx    /var/music/app/logs/web
+
+## STATIC
+chgrp -R www-data /var/music/app/static
+chmod -R g=rw     /var/music/app/static
+
+## CONFIG PRIVATE
+find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql
+find /var/music/config/private/prod/ssl/db -type f | xargs chgrp mysql
 
 
-
-
-
-# OPEN PORT 3306 FOR DOCKER
-# iptables -A INPUT -p tcp --dport 3306 --jump ACCEPT
-# iptables-save > /etc/iptables/rules.v4
 
 # users must put their own github private keys in place
-
-
-
-# secure passwords
-# figure out why db logs arent working
-# figure out why nginx config isnt working
-
-
