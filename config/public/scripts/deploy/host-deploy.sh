@@ -1,6 +1,8 @@
 #!/bin/bash
 
-
+##############
+# GET DOCKER #
+##############
 
 # UPDATE BASIC SYSTEM
 apt-get update && apt-get dist-upgrade -y && apt-get install -y --force-yes git iptables-persistent emacs
@@ -15,6 +17,10 @@ apt-get update
 apt-get install -y docker-ce && \
 sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
 sudo chmod +x /usr/local/bin/docker-compose
+
+########################
+# ADD USERS AND GROUPS #
+########################
 
 # ADD EUGENE
 adduser --disabled-password --gecos "" eugene && \
@@ -56,22 +62,36 @@ usermod -a -G music ian && \
 usermod -a -G mysql ian && \
 usermod -a -G www-data ian
 
+##################
+# CLONE GIT REPO #
+##################
+
 # PREPARE PERMISSIONS FOR GIT REPO
 mkdir -p /var/music && \
 chgrp music /var/music && \
 chmod g+ws /var/music && \
 cd /var/music
 
+# SCP IAN'S GITHUB PRIVATE KEY FROM LOCAL TO LINODE
+# scp ~/.ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
+
 # CLONE GIT REPO
 su ian
 eval `ssh-agent -s` && \
 ssh-add ~/.ssh/id_rsa.ian_at_github && \
 git clone --shared git@github.com:inieves/music.git /var/music
+exit
 
-# SCP FROM IAN'S SECURE SPACE TO LINODS
-rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private
+################
+# SEND SECRETS #
+################
 
-# FIX PERMISSIONS
+# SCP PROD SECRETS FROM LOCAL TO LINODE
+# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private
+
+###################
+# FIX PERMISSIONS #
+###################
 
 # CODE
 chgrp -R www-data /var/music/app/code
@@ -95,6 +115,7 @@ chmod -R g=rw     /var/music/app/static
 find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql
 find /var/music/config/private/prod/ssl/db -type f | xargs chgrp mysql
 
+#########################################################
+# users must put their own github private keys in place #
+#########################################################
 
-
-# users must put their own github private keys in place
