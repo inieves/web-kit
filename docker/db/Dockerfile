@@ -1,7 +1,7 @@
 FROM debian:jessie-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -r -g mysql mysql
+RUN groupadd --system --gid 1005 mysql && useradd --system --gid 1005 --uid 1005 mysql
 
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -66,7 +66,7 @@ RUN { \
 # don't reverse lookup hostnames, they are usually another container
 	&& echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
-VOLUME ["/var/lib/mysql", "/etc/mysql/conf.d"]
+VOLUME ["/var/lib/mysql", "/var/log/mysql", "/etc/mysql/conf.d"]
 
 COPY ./docker/db/docker-entrypoint.sh /usr/local/bin/
 
