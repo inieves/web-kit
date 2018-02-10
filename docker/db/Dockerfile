@@ -63,7 +63,7 @@ RUN { \
 #
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
 #
-	&& chmod u=rwx,g=rwxs,o= /var/run/mysqld \
+	&& chmod u=rwx,g=rwx,o= /var/run/mysqld \
 #
 # comment out a few problematic configuration values
 	&& find /etc/mysql/ -name '*.cnf' -print0 \
