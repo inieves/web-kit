@@ -1,32 +1,50 @@
 #!/bin/sh
 
+###########
+# RELEASE #
+###########
+
+echo 'RELEASING...'
+
+sudo rsync -av --exclude='app/db' --exclude='app/logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/repo/ /var/music/release
+
 ###################
 # FIX PERMISSIONS #
 ###################
 
-echo 'START setting permissions'
+echo 'SETTING PERMISSIONS...'
 
-## SET OWNER TO ROOT
-sudo chown -R root /var/music
+## SET DEFAULT OWNER AND GROUP
+sudo chown -R root  /var/music/release && \
+sudo chgrp -R music /var/music/release
 
-## PREVENT OTHER FROM READING ANY FILES
-sudo find /var/music -type f | xargs sudo chmod ug=rw,o= && \
-sudo find /var/music -type d | xargs sudo chmod g+w
+## SET DEFAULT PERMISSIONS
+sudo find /var/music/release -type d | xargs sudo chmod 00770 && \
+sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
 
 # CODE
-sudo chmod -R g=rwx    /var/music/app/code
+sudo chgrp -R www-data /var/music/release/app/code && \
+sudo find /var/music/release/app/code -type f | xargs sudo chmod ug+x
+
+## DB
+sudo chgrp -R mysql /var/music/release/app/db && \
+sudo find /var/music/release/app/db -type f | xargs sudo chmod ug+x && \
+sudo chgrp mysql /var/music/release/docker/db/mysql.cnf
+
+## LOGS
+sudo chgrp -R mysql    /var/music/release/app/logs/db && \
+sudo find /var/music/release/app/logs/db -type f | xargs sudo chmod ug+x
+sudo chgrp -R www-data /var/music/release/app/logs/web && \
+sudo find /var/music/release/app/logs/web -type f | xargs sudo chmod ug+x
 
 ## STATIC
-sudo chmod -R g=rwx    /var/music/app/static
+sudo chgrp -R www-data /var/music/release/app/static && \
+sudo find /var/music/release/app/static -type f | xargs sudo chmod ug+x
 
-## DOCKER
-sudo find /var/music/docker -type f | xargs sudo chmod ug=rw,o= && \
-sudo find /var/music/docker -type d | xargs sudo chmod g+w
+## CONFIG PRIVATE
+sudo find /var/music/release/config/private/prod/auth/db | xargs sudo chgrp mysql && \
+sudo find /var/music/release/config/private/prod/ssl/db  | xargs sudo chgrp mysql && \
+sudo find /var/music/release/config/private/prod/ssl/web | xargs sudo chgrp www-data
 
-## BASE DIRECTORY
-sudo chmod ug=rw,o= /var/music/*
+echo 'FINISHED... ROCK AND ROLL!!!'
 
-## GIT HOOKS
-sudo chmod ug=rwx /var/music/.git/hooks/post-merge
-
-echo 'END setting permissions'
