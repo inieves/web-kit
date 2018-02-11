@@ -46,5 +46,8 @@ sudo find /var/music/release/config/private/prod/auth/db | xargs sudo chgrp mysq
 sudo find /var/music/release/config/private/prod/ssl/db  | xargs sudo chgrp mysql && \
 sudo find /var/music/release/config/private/prod/ssl/web | xargs sudo chgrp www-data
 
+## PHP SCRIPTS
+sudo find /var/music/release/docker/php/docker* | xargs sudo chmod ug+x
+
 echo 'FINISHED... ROCK AND ROLL!!!'
 
