@@ -16,7 +16,7 @@ RUN \
 COPY ./docker/web/nginx.conf /etc/nginx/default.conf.raw
 
 # Define mountable directories.
-VOLUME ["/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www"]
+VOLUME ["/etc/nginx/certs", "/var/log/nginx", "/var/www"]
 
 # Define working directory.
 WORKDIR /etc/nginx
