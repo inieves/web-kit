@@ -68,10 +68,11 @@ usermod -a -G www-data ian
 ##################
 
 # PREPARE PERMISSIONS FOR GIT REPO
-mkdir -p /var/music && \
-chgrp music /var/music && \
-chmod g+ws /var/music && \
-cd /var/music
+mkdir /var/music && \
+mkdir /var/music/repo && \
+mkdir /var/music/release && \
+chgrp -R music /var/music && \
+chmod -R g+ws /var/music
 
 # SCP IAN'S GITHUB PRIVATE KEY FROM LOCAL TO LINODE
 # scp ~/.ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
@@ -81,7 +82,7 @@ su ian
 
 eval `ssh-agent -s` && \
 ssh-add ~/.ssh/id_rsa.ian_at_github && \
-git clone --shared git@github.com:inieves/music.git /var/music && \
+git clone --shared git@github.com:inieves/music.git /var/music/repo && \
 exit
 
 ################
@@ -89,48 +90,17 @@ exit
 ################
 
 # SCP PROD SECRETS FROM LOCAL TO LINODE
-# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/config/private
+# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/repo/config/private
 
-###################
-# FIX PERMISSIONS #
-###################
+################################
+# COPY DB AND LOGS DIRECTORIES #
+################################
 
-## SET OWNER TO ROOT
-chown -R root /var/music
+cp -rf /var/music/repo/app/db /var/music/release/app/db && \
+cp -rf /var/music/repo/app/logs /var/music/release/app/logs
 
-## PREVENT OTHER FROM READING ANY FILES
-find /var/music -type f | xargs chmod ug=rw,o= && \
-find /var/music -type d | xargs chmod g+w
+##################
+# RUN POST-MERGE #
+##################
 
-# CODE
-chgrp -R www-data /var/music/app/code && \
-chmod -R g=rwx    /var/music/app/code
-
-## DB
-chgrp -R mysql /var/music/app/db && \
-chmod -R g=rwx /var/music/app/db && \
-chgrp mysql    /var/music/docker/db/mysql.cnf
-
-## LOGS
-chgrp -R mysql    /var/music/app/logs/db && \
-chmod -R g=rwx    /var/music/app/logs/db && \
-chgrp -R www-data /var/music/app/logs/web && \
-chmod -R g=rwx    /var/music/app/logs/web
-
-## STATIC
-chgrp -R www-data /var/music/app/static && \
-chmod -R g=rwx    /var/music/app/static
-
-## CONFIG PRIVATE
-find /var/music/config/private/prod/auth/db -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/db  -type f | xargs chgrp mysql && \
-find /var/music/config/private/prod/ssl/web -type f | xargs chgrp www-data
-
-## GIT HOOKS
-chmod ug=rwx /var/music/.git/hooks/post-merge
-
-#########################################################
-# users must put their own github private keys in place #
-#########################################################
-
-
+# ./post-merge
