@@ -41,22 +41,22 @@ Contact Info
 Account: root
 
 * name: root
-* password: [./config/private/auth/db/dev/.en_root_password](./config/private/auth/db/dev/.en_root_password)
+* password: [./config/private/dev/auth/db/.en_root_password](./config/private/dev/auth/db/.en_root_password)
 * remote login: no
 * SSL required: no
 
 Account: app
 
 * name: app
-* password: [./config/private/auth/db/dev/.en_user_password](./config/private/auth/db/dev/.en_user_password)
+* password: [./config/private/dev/auth/db/.en_user_password](./config/private/dev/auth/db/.en_user_password)
 * remote login: yes
 * SSL required: sometimes (only for remote login)
 
 SSL Credentials
 
-* Certificate Authority: [./config/private/ssl/db/dev/ca.pem](./config/private/ssl/db/dev/ca.pem)
-* Client Cert: [./config/private/ssl/db/dev/client-cert.pem](./config/private/ssl/db/dev/client-cert.pem)
-* Client Key: [./config/private/ssl/db/dev/client-key.pem](./config/private/ssl/db/dev/client-key.pem)
+* Certificate Authority: [./config/private/dev/ssl/db/ca.pem](./config/private/dev/ssl/db/ca.pem)
+* Client Cert: [./config/private/dev/ssl/db/client-cert.pem](./config/private/dev/ssl/db/client-cert.pem)
+* Client Key: [./config/private/dev/ssl/db/client-key.pem](./config/private/dev/ssl/db/client-key.pem)
 
 ### php
 
