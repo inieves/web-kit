@@ -220,6 +220,8 @@ RUN \
 	curl -sS https://getcomposer.org/installer | php && \
 	mv composer.phar /usr/local/bin/composer
 
+COPY ./docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+
 # Define mountable directories.
 VOLUME ["/usr/local/etc/php-fpm.d"]
 

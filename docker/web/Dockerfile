@@ -13,6 +13,8 @@ RUN \
 	rm -rf /var/lib/apt/lists/* && \
 	rm /etc/nginx/sites-enabled/default
 
+COPY ./docker/web/nginx.conf /etc/nginx/default.conf.raw
+
 # Define mountable directories.
 VOLUME ["/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx", "/var/www"]
 

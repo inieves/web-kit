@@ -46,6 +46,8 @@ ENV MYSQL_VERSION 5.7.21-1debian8
 
 RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
 
+COPY ./docker/db/my.cnf /etc/mysql/conf.d/my.cnf
+
 # the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
 # also, we set debconf keys to make APT a little quieter
 RUN { \
@@ -59,6 +61,7 @@ RUN { \
 	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
 #
 	&& chown -R root:mysql /var/lib/mysql \
+	&& chown -R root:mysql /etc/mysql \
 	&& chown -R mysql:www-data /var/run/mysqld \
 #
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
@@ -72,7 +75,7 @@ RUN { \
 # don't reverse lookup hostnames, they are usually another container
 	&& echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
-VOLUME ["/var/lib/mysql", "/var/log/mysql", "/etc/mysql/conf.d"]
+VOLUME ["/var/lib/mysql", "/var/log/mysql"]
 
 COPY ./docker/db/docker-entrypoint.sh /usr/local/bin/
 
