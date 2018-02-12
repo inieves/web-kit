@@ -3,7 +3,7 @@
 /logs/
 
 # IGNORE PROD SECRETS
-/config/private/prod
+/secrets/prod
 
 # IGNORE MAC TURDS
 .DS_Store

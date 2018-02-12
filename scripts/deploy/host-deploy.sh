@@ -90,7 +90,7 @@ exit
 ################
 
 # SCP PROD SECRETS FROM LOCAL TO LINODE
-# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/git/config/private
+# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/secrets/prod ian@172.104.17.40:/var/music/git/secrets
 
 ##################################
 # CREATE DB AND LOGS DIRECTORIES #

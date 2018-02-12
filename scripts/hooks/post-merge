@@ -6,11 +6,11 @@
 
 echo 'RELEASING CODE...'
 
-sudo rsync -av --exclude='db' --exclude='logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secrets' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 echo 'UPDATING GIT HOOKS...'
 
-sudo rsync -av /var/music/release/config/public/hooks/* /var/music/git/hooks
+sudo rsync -av /var/music/git/scripts/hooks/* /var/music/git/hooks
 
 ###################
 # FIX PERMISSIONS #
@@ -27,33 +27,40 @@ sudo find /var/music/release -type d | xargs sudo chmod ug=rw,o=rx && \
 sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
 
 # CODE
-sudo chmod o= /var/music/release/code && \
+sudo chmod -R o= /var/music/release/code && \
 sudo chgrp -R www-data /var/music/release/code && \
 sudo find /var/music/release/code -type f | xargs sudo chmod g+x
 
 ## DB
-sudo chmod o= /var/music/release/db && \
+sudo chmod -R o= /var/music/release/db && \
 sudo chgrp -R mysql /var/music/release/db
 
+## DOCKER
+sudo chmod ug+x /var/music/release/docker/db/docker-entrypoint.sh && \
+sudo chmod ug+x /var/music/release/docker/php/docker-php-*
+
 ## LOGS: DB
-sudo chmod o= /var/music/release/logs/db && \
+sudo chmod -R o= /var/music/release/logs/db && \
 sudo chgrp -R mysql /var/music/release/logs/db
 
 ## LOGS: WEB
-sudo chmod o= /var/music/release/logs/web && \
+sudo chmod -R o= /var/music/release/logs/web && \
 sudo chgrp -R www-data /var/music/release/logs/web
 
-## STATIC
-sudo chmod o= /var/music/release/static && \
-sudo chgrp -R www-data /var/music/release/static
+## SCRIPTS
+sudo chmod -R o= /var/music/release/scripts
 
-## CONFIG PRIVATE
-sudo chmod -R o=       /var/music/release/config/private/prod/auth/db && \
-sudo chgrp -R mysql    /var/music/release/config/private/prod/auth/db && \
-sudo chmod -R o=       /var/music/release/config/private/prod/ssl/db && \
-sudo chgrp -R mysql    /var/music/release/config/private/prod/ssl/db && \
-sudo chmod -R o=       /var/music/release/config/private/prod/ssl/web && \
-sudo chgrp -R www-data /var/music/release/config/private/prod/ssl/web
+## SECRETS
+sudo chmod -R o=       /var/music/release/secrets/prod/auth/db && \
+sudo chgrp -R mysql    /var/music/release/secrets/prod/auth/db && \
+sudo chmod -R o=       /var/music/release/secrets/prod/ssl/db && \
+sudo chgrp -R mysql    /var/music/release/secrets/prod/ssl/db && \
+sudo chmod -R o=       /var/music/release/secrets/prod/ssl/web && \
+sudo chgrp -R www-data /var/music/release/secrets/prod/ssl/web
+
+## STATIC
+sudo chmod -R o= /var/music/release/static && \
+sudo chgrp -R www-data /var/music/release/static
 
 ## GIT HOOKS
 sudo chown -R root  /var/music/git && \
