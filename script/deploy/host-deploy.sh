@@ -104,4 +104,4 @@ cp -rf /var/music/git/log /var/music/release/upload
 # RUN POST-MERGE #
 ##################
 
-# ./post-merge
+/var/music/git/script/hooks/post-merge
