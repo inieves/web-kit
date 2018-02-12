@@ -10,7 +10,7 @@ sudo rsync -av --exclude='db' --exclude='log' --exclude='script' --exclude='secr
 
 echo 'UPDATING GIT HOOKS...'
 
-sudo rsync -av /var/music/git/script/hooks/* /var/music/git/hooks
+sudo rsync -av /var/music/git/script/hooks/* /var/music/git/.git/hooks
 
 ###################
 # FIX PERMISSIONS #
