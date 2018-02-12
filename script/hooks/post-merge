@@ -6,11 +6,11 @@
 
 echo 'RELEASING CODE...'
 
-sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secret' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+sudo rsync -av --exclude='db' --exclude='logs' --exclude='script' --exclude='secret' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 echo 'UPDATING GIT HOOKS...'
 
-sudo rsync -av /var/music/git/scripts/hooks/* /var/music/git/hooks
+sudo rsync -av /var/music/git/script/hooks/* /var/music/git/hooks
 
 ###################
 # FIX PERMISSIONS #
@@ -47,10 +47,10 @@ sudo chgrp -R mysql /var/music/release/logs/db
 sudo chmod -R o= /var/music/release/logs/web && \
 sudo chgrp -R www-data /var/music/release/logs/web
 
-## SCRIPTS
-sudo chmod -R o= /var/music/release/scripts
+## SCRIPT
+sudo chmod -R o= /var/music/release/script
 
-## SECRETS
+## SECRET
 sudo chmod -R o=       /var/music/release/secret/prod/auth/db && \
 sudo chgrp -R mysql    /var/music/release/secret/prod/auth/db && \
 sudo chmod -R o=       /var/music/release/secret/prod/ssl/db && \
