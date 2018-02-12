@@ -69,7 +69,7 @@ usermod -a -G www-data ian
 
 # PREPARE PERMISSIONS FOR GIT REPO
 mkdir /var/music && \
-mkdir /var/music/repo && \
+mkdir /var/music/git && \
 mkdir /var/music/release && \
 chown -R root:music /var/music && \
 chmod -R ug=rwx,o=rx /var/music
@@ -82,7 +82,7 @@ su ian
 
 eval `ssh-agent -s` && \
 ssh-add ~/.ssh/id_rsa.ian_at_github && \
-git clone --shared git@github.com:inieves/music.git /var/music/repo && \
+git clone --shared git@github.com:inieves/music.git /var/music/git && \
 exit
 
 ################
@@ -90,15 +90,15 @@ exit
 ################
 
 # SCP PROD SECRETS FROM LOCAL TO LINODE
-# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/repo/config/private
+# rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/git/config/private
 
 ##################################
 # CREATE DB AND LOGS DIRECTORIES #
 ##################################
 
 mkdir /var/music/release/app && \
-cp -rf /var/music/repo/app/db /var/music/release/app/db && \
-cp -rf /var/music/repo/app/logs /var/music/release/app/logs
+cp -rf /var/music/git/app/db /var/music/release/app/db && \
+cp -rf /var/music/git/app/logs /var/music/release/app/logs
 
 ##################
 # RUN POST-MERGE #

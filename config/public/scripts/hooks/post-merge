@@ -6,7 +6,7 @@
 
 echo 'RELEASING...'
 
-sudo rsync -av --exclude='app/db' --exclude='app/logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/repo/ /var/music/release
+sudo rsync -av --exclude='app/db' --exclude='app/logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 ###################
 # FIX PERMISSIONS #
@@ -50,4 +50,3 @@ sudo chmod -R o=       /var/music/release/config/private/prod/ssl/web && \
 sudo chgrp -R www-data /var/music/release/config/private/prod/ssl/web
 
 echo 'FINISHED... ROCK AND ROLL!!!'
-
