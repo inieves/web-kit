@@ -9,7 +9,7 @@ services:
     command: /bin/sh -c "envsubst '$$WEB_HOST_NAME $$WEB_HOST_IP' < /etc/nginx/default.conf.raw > /etc/nginx/conf.d/default.conf && while ! nc -w 1 -z db 3306; do sleep 0.1; done; nginx -g 'daemon off;'"
     volumes:
       - ./app/logs/web:/var/log/nginx
-      - ./app/static:/var/www/static:ro
+      - ./app/static:/var/www/static
       - ./app/code/php:/var/www/code/php:ro
       - "sockets-volume-web-to-php:/sockets/web-to-php"
     networks:
