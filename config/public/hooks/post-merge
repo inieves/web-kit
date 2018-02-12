@@ -58,7 +58,8 @@ sudo chgrp -R www-data /var/music/release/config/private/prod/ssl/web
 ## GIT HOOKS
 sudo chown -R root  /var/music/git && \
 sudo chgrp -R music /var/music/git && \
-sudo chmod -R o= /var/music/git && \
-sudo chmod -R u=rwx,g=rx /var/music/git/.git/hooks
+sudo find /var/music/git -type d | xargs sudo chmod ug=rwx,o= && \
+sudo find /var/music/git -type f | xargs sudo chmod ug=rw,o= && \
+sudo chmod ug=rwx /var/music/git/.git/hooks/*
 
 echo 'FINISHED... ROCK AND ROLL!!!'
