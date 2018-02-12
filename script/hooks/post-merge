@@ -27,24 +27,25 @@ sudo find /var/music/release -type d | xargs sudo chmod ug=rw,o=rx && \
 sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
 
 # CODE
-sudo chmod -R o= /var/music/release/code && \
+sudo chmod -R o=       /var/music/release/code && \
 sudo chgrp -R www-data /var/music/release/code && \
 sudo find /var/music/release/code -type f | xargs sudo chmod g+x
 
 ## DB
-sudo chmod -R o= /var/music/release/db && \
+sudo chmod -R o=    /var/music/release/db && \
 sudo chgrp -R mysql /var/music/release/db
 
 ## DOCKER
-sudo chmod ug+x /var/music/release/docker/db/docker-entrypoint.sh && \
-sudo chmod ug+x /var/music/release/docker/php/docker-php-*
+sudo chmod -R o= /var/music/release/docker && \
+sudo chmod ug+x  /var/music/release/docker/db/docker-entrypoint.sh && \
+sudo chmod ug+x  /var/music/release/docker/php/docker-php-*
 
 ## LOGS: DB
-sudo chmod -R o= /var/music/release/log/db && \
+sudo chmod -R o=    /var/music/release/log/db && \
 sudo chgrp -R mysql /var/music/release/log/db
 
 ## LOGS: WEB
-sudo chmod -R o= /var/music/release/log/web && \
+sudo chmod -R o=       /var/music/release/log/web && \
 sudo chgrp -R www-data /var/music/release/log/web
 
 ## SCRIPT
@@ -59,11 +60,11 @@ sudo chmod -R o=       /var/music/release/secret/prod/ssl/web && \
 sudo chgrp -R www-data /var/music/release/secret/prod/ssl/web
 
 ## STATIC
-sudo chmod -R o= /var/music/release/static && \
+sudo chmod -R o=       /var/music/release/static && \
 sudo chgrp -R www-data /var/music/release/static
 
 ## UPLOAD
-sudo chmod -R o= /var/music/release/upload && \
+sudo chmod -R o=       /var/music/release/upload && \
 sudo chgrp -R www-data /var/music/release/upload
 
 ## GIT HOOKS
