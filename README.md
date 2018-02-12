@@ -8,7 +8,7 @@ Docker Info
 
 * id: web
 * service: nginx (1.6.2)
-* serves: [./code](./code) [./static](./static)
+* serves: [./code](./code) [./static](./static) [./upload](./upload)
 * logs: [./logs/web](./logs/web)
 
 Contact Info

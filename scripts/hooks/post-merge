@@ -6,7 +6,7 @@
 
 echo 'RELEASING CODE...'
 
-sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secrets' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secrets' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 echo 'UPDATING GIT HOOKS...'
 
@@ -61,6 +61,10 @@ sudo chgrp -R www-data /var/music/release/secrets/prod/ssl/web
 ## STATIC
 sudo chmod -R o= /var/music/release/static && \
 sudo chgrp -R www-data /var/music/release/static
+
+## UPLOAD
+sudo chmod -R o= /var/music/release/upload && \
+sudo chgrp -R www-data /var/music/release/upload
 
 ## GIT HOOKS
 sudo chown -R root  /var/music/git && \

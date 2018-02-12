@@ -8,9 +8,10 @@ services:
       dockerfile: ./docker/web/Dockerfile
     command: /bin/sh -c "envsubst '$$WEB_HOST_NAME $$WEB_HOST_IP' < /etc/nginx/default.conf.raw > /etc/nginx/conf.d/default.conf && while ! nc -w 1 -z db 3306; do sleep 0.1; done; nginx -g 'daemon off;'"
     volumes:
-      - ./logs/web:/var/log/nginx
-      - ./static:/var/www/static
       - ./code/php:/var/www/code/php:ro
+      - ./logs/web:/var/log/nginx
+      - ./static:/var/www/resource/static:ro
+      - ./upload:/var/www/resource/upload
       - "sockets-volume-web-to-php:/sockets/web-to-php"
     networks:
       - backend-php-network
@@ -32,6 +33,7 @@ services:
       - MYSQL_USER
     volumes:
       - ./code/php:/var/www/code/php:ro
+      - ./upload:/var/www/resource/upload
       - "sockets-volume-web-to-php:/sockets/web-to-php"
       - "sockets-volume-php-to-db:/sockets/php-to-db"
     networks:
