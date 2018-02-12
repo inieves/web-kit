@@ -25,7 +25,7 @@ sudo chown -R root  /var/music/release && \
 sudo chgrp -R music /var/music/release
 
 ## SET DEFAULT PERMISSIONS
-sudo find /var/music/release -type d | xargs sudo chmod ug=rw,o=rx && \
+sudo find /var/music/release -type d | xargs sudo chmod ug=rwx,o=rx && \
 sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
 
 # CODE
