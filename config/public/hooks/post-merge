@@ -4,9 +4,13 @@
 # RELEASE #
 ###########
 
-echo 'RELEASING...'
+echo 'RELEASING CODE...'
 
 sudo rsync -av --exclude='app/db' --exclude='app/logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+
+echo 'UPDATING GIT HOOKS...'
+
+sudo rsync -av /var/music/release/config/public/hooks/* /var/music/git/hooks
 
 ###################
 # FIX PERMISSIONS #
@@ -19,29 +23,29 @@ sudo chown -R root  /var/music/release && \
 sudo chgrp -R music /var/music/release
 
 ## SET DEFAULT PERMISSIONS
-sudo find /var/music/release -type d | xargs sudo chmod 00775 && \
+sudo find /var/music/release -type d | xargs sudo chmod ug=rw,o=rx && \
 sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
 
 # CODE
 sudo chmod o= /var/music/release/app/code && \
 sudo chgrp -R www-data /var/music/release/app/code && \
-sudo find /var/music/release/app/code -type f | xargs sudo chmod g=rx
+sudo find /var/music/release/app/code -type f | xargs sudo chmod g+x
 
 ## DB
-sudo chmod o= /var/music/release/app/db
+sudo chmod o= /var/music/release/app/db && \
 sudo chgrp -R mysql /var/music/release/app/db
 
-
-## LOGS
+## LOGS: DB
 sudo chmod o= /var/music/release/app/logs/db && \
-sudo chgrp -R mysql /var/music/release/app/logs/db && \
+sudo chgrp -R mysql /var/music/release/app/logs/db
+
+## LOGS: WEB
 sudo chmod o= /var/music/release/app/logs/web && \
 sudo chgrp -R www-data /var/music/release/app/logs/web
 
 ## STATIC
 sudo chmod o= /var/music/release/app/static && \
-sudo chgrp -R www-data /var/music/release/app/static && \
-sudo find /var/music/release/app/static -type f | xargs sudo chmod g=r
+sudo chgrp -R www-data /var/music/release/app/static
 
 ## CONFIG PRIVATE
 sudo chmod -R o=       /var/music/release/config/private/prod/auth/db && \
@@ -50,5 +54,11 @@ sudo chmod -R o=       /var/music/release/config/private/prod/ssl/db && \
 sudo chgrp -R mysql    /var/music/release/config/private/prod/ssl/db && \
 sudo chmod -R o=       /var/music/release/config/private/prod/ssl/web && \
 sudo chgrp -R www-data /var/music/release/config/private/prod/ssl/web
+
+## GIT HOOKS
+sudo chown -R root  /var/music/git && \
+sudo chgrp -R music /var/music/git && \
+sudo chmod -R o= /var/music/git && \
+sudo chmod -R u=rwx,g=rx /var/music/git/.git/hooks
 
 echo 'FINISHED... ROCK AND ROLL!!!'
