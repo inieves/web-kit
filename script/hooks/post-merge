@@ -37,10 +37,20 @@ sudo find /var/music/release/code -type f | xargs sudo chmod g+x
 sudo chmod -R o=    /var/music/release/db && \
 sudo chgrp -R mysql /var/music/release/db
 
-## DOCKER
-sudo chmod -R o= /var/music/release/docker && \
-sudo chmod ug+x  /var/music/release/docker/db/docker-entrypoint.sh && \
-sudo chmod ug+x  /var/music/release/docker/php/docker-php-*
+## DOCKER: DB
+sudo chmod -R o=     /var/music/release/docker/db && \
+sudo chgrp -R mysql  /var/music/release/docker/db && \
+sudo chmod ug+x,o=rx /var/music/release/docker/db/*
+# o=rx is needed by docker to create the image so it will properly run.. not sure why
+
+## DOCKER: PHP
+sudo chmod -R o=       /var/music/release/docker/php && \
+sudo chgrp -R www-data /var/music/release/docker/php && \
+sudo chmod ug+x        /var/music/release/docker/php/docker-php-*
+
+## DOCKER: WEB
+sudo chmod -R o=       /var/music/release/docker/web && \
+sudo chgrp -R www-data /var/music/release/docker/web
 
 ## LOGS: DB
 sudo chmod -R o=    /var/music/release/log/db && \
