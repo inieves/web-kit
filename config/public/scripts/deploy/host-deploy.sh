@@ -71,8 +71,8 @@ usermod -a -G www-data ian
 mkdir /var/music && \
 mkdir /var/music/repo && \
 mkdir /var/music/release && \
-chgrp -R music /var/music && \
-chmod -R g+ws /var/music
+chown -R root:music /var/music && \
+chmod -R ug=rwx,o=rx /var/music
 
 # SCP IAN'S GITHUB PRIVATE KEY FROM LOCAL TO LINODE
 # scp ~/.ssh/id_rsa.ian_at_github ian@172.104.17.40:~/.ssh
@@ -92,10 +92,11 @@ exit
 # SCP PROD SECRETS FROM LOCAL TO LINODE
 # rsync -rv --exclude '.DS_Store' ~/gitRepos/music/config/private/prod ian@172.104.17.40:/var/music/repo/config/private
 
-################################
-# COPY DB AND LOGS DIRECTORIES #
-################################
+##################################
+# CREATE DB AND LOGS DIRECTORIES #
+##################################
 
+mkdir /var/music/release/app && \
 cp -rf /var/music/repo/app/db /var/music/release/app/db && \
 cp -rf /var/music/repo/app/logs /var/music/release/app/logs
 

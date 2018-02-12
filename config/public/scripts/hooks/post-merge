@@ -1,0 +1,53 @@
+#!/bin/sh
+
+###########
+# RELEASE #
+###########
+
+echo 'RELEASING...'
+
+sudo rsync -av --exclude='app/db' --exclude='app/logs' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/repo/ /var/music/release
+
+###################
+# FIX PERMISSIONS #
+###################
+
+echo 'SETTING PERMISSIONS...'
+
+## SET DEFAULT OWNER AND GROUP
+sudo chown -R root  /var/music/release && \
+sudo chgrp -R music /var/music/release
+
+## SET DEFAULT PERMISSIONS
+sudo find /var/music/release -type d | xargs sudo chmod 00775 && \
+sudo find /var/music/release -type f | xargs sudo chmod ug=rw,o=
+
+# CODE
+sudo chmod o= /var/music/release/app/code && \
+sudo chgrp -R www-data /var/music/release/app/code && \
+sudo find /var/music/release/app/code -type f | xargs sudo chmod g=rx
+
+## DB
+sudo chmod o= /var/music/release/app/db
+
+## LOGS
+sudo chmod o= /var/music/release/app/logs/db && \
+sudo chgrp -R mysql /var/music/release/app/logs/db && \
+sudo chmod o= /var/music/release/app/logs/web && \
+sudo chgrp -R www-data /var/music/release/app/logs/web
+
+## STATIC
+sudo chmod o= /var/music/release/app/static && \
+sudo chgrp -R www-data /var/music/release/app/static && \
+sudo find /var/music/release/app/static -type f | xargs sudo chmod g=r
+
+## CONFIG PRIVATE
+sudo chmod -R o=       /var/music/release/config/private/prod/auth/db && \
+sudo chgrp -R mysql    /var/music/release/config/private/prod/auth/db && \
+sudo chmod -R o=       /var/music/release/config/private/prod/ssl/db && \
+sudo chgrp -R mysql    /var/music/release/config/private/prod/ssl/db && \
+sudo chmod -R o=       /var/music/release/config/private/prod/ssl/web && \
+sudo chgrp -R www-data /var/music/release/config/private/prod/ssl/web
+
+echo 'FINISHED... ROCK AND ROLL!!!'
+
