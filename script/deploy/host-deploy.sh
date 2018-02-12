@@ -98,8 +98,8 @@ exit
 
 mkdir /var/music/release && \
 cp -rf /var/music/git/db /var/music/release/db && \
-cp -rf /var/music/git/logs /var/music/release/logs && \
-cp -rf /var/music/git/logs /var/music/release/upload
+cp -rf /var/music/git/log /var/music/release/log && \
+cp -rf /var/music/git/log /var/music/release/upload
 
 ##################
 # RUN POST-MERGE #

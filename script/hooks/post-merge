@@ -6,7 +6,7 @@
 
 echo 'RELEASING CODE...'
 
-sudo rsync -av --exclude='db' --exclude='logs' --exclude='script' --exclude='secret' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+sudo rsync -av --exclude='db' --exclude='log' --exclude='script' --exclude='secret' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 echo 'UPDATING GIT HOOKS...'
 
@@ -40,12 +40,12 @@ sudo chmod ug+x /var/music/release/docker/db/docker-entrypoint.sh && \
 sudo chmod ug+x /var/music/release/docker/php/docker-php-*
 
 ## LOGS: DB
-sudo chmod -R o= /var/music/release/logs/db && \
-sudo chgrp -R mysql /var/music/release/logs/db
+sudo chmod -R o= /var/music/release/log/db && \
+sudo chgrp -R mysql /var/music/release/log/db
 
 ## LOGS: WEB
-sudo chmod -R o= /var/music/release/logs/web && \
-sudo chgrp -R www-data /var/music/release/logs/web
+sudo chmod -R o= /var/music/release/log/web && \
+sudo chgrp -R www-data /var/music/release/log/web
 
 ## SCRIPT
 sudo chmod -R o= /var/music/release/script

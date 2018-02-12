@@ -1,6 +1,6 @@
 *~
 /db/
-/logs/
+/log/
 
 # IGNORE PROD SECRETS
 /secret/prod
