@@ -29,6 +29,7 @@ sudo find /var/music/release/app/code -type f | xargs sudo chmod g=rx
 
 ## DB
 sudo chmod o= /var/music/release/app/db
+sudo chgrp -R mysql /var/music/release/app/db
 
 ## LOGS
 sudo chmod o= /var/music/release/app/logs/db && \
