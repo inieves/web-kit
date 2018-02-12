@@ -96,7 +96,6 @@ exit
 # CREATE DB AND LOGS DIRECTORIES #
 ##################################
 
-mkdir /var/music/release && \
 cp -rf /var/music/git/db /var/music/release/db && \
 cp -rf /var/music/git/log /var/music/release/log && \
 cp -rf /var/music/git/log /var/music/release/upload
