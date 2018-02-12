@@ -70,10 +70,10 @@ sudo chmod -R o=       /var/music/release/upload && \
 sudo chgrp -R www-data /var/music/release/upload
 
 ## GIT HOOKS
-sudo chown -R root  /var/music/git && \
-sudo chgrp -R music /var/music/git && \
-sudo find /var/music/git -type d | xargs sudo chmod ug=rwx,o= && \
-sudo find /var/music/git -type f | xargs sudo chmod ug=rw,o= && \
+sudo chown -R root  /var/music/git/.git && \
+sudo chgrp -R music /var/music/git/.git && \
+sudo find /var/music/git/.git -type d | xargs sudo chmod ug=rwx,o= && \
+sudo find /var/music/git/.git -type f | xargs sudo chmod ug=rw,o= && \
 sudo chmod ug=rwx /var/music/git/.git/hooks/*
 
 echo 'FINISHED... ROCK AND ROLL!!!'
