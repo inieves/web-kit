@@ -1,6 +1,6 @@
 *~
-/app/db/
-/app/logs/
+/db/
+/logs/
 
 # IGNORE PROD SECRETS
 /config/private/prod

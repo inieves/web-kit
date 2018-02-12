@@ -96,9 +96,9 @@ exit
 # CREATE DB AND LOGS DIRECTORIES #
 ##################################
 
-mkdir /var/music/release/app && \
-cp -rf /var/music/git/app/db /var/music/release/app/db && \
-cp -rf /var/music/git/app/logs /var/music/release/app/logs
+mkdir /var/music/release && \
+cp -rf /var/music/git/db /var/music/release/db && \
+cp -rf /var/music/git/logs /var/music/release/logs
 
 ##################
 # RUN POST-MERGE #

@@ -8,8 +8,8 @@ Docker Info
 
 * id: web
 * service: nginx (1.6.2)
-* serves: [./app/code](./app/code) [./app/static](./app/static)
-* logs: [./app/logs/web](./app/logs/web)
+* serves: [./code](./code) [./static](./static)
+* logs: [./logs/web](./logs/web)
 
 Contact Info
 
@@ -28,8 +28,8 @@ Docker Info
 
 * id: db
 * service: MySQL (5.7.21-1debian8)
-* serves: [./app/db](./app/db)
-* logs: [./app/logs/db](./app/logs/db)
+* serves: [./db](./db)
+* logs: [./logs/db](./logs/db)
 
 Contact Info
 
@@ -64,8 +64,8 @@ Docker Info
 
 * id: php
 * service: php-fpm (7.1.14)
-* serves: [./app/code/php](./app/code/php)
-* logs: [./app/logs/web](./app/logs/web)
+* serves: [./code/php](./code/php)
+* logs: [./logs/web](./logs/web)
 
 Contact Info
 
