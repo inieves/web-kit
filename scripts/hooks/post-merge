@@ -6,7 +6,7 @@
 
 echo 'RELEASING CODE...'
 
-sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secrets' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
+sudo rsync -av --exclude='db' --exclude='logs' --exclude='scripts' --exclude='secret' --exclude='upload' --exclude='.git' --exclude='.gitignore' --exclude='README.md' /var/music/git/ /var/music/release
 
 echo 'UPDATING GIT HOOKS...'
 
@@ -51,12 +51,12 @@ sudo chgrp -R www-data /var/music/release/logs/web
 sudo chmod -R o= /var/music/release/scripts
 
 ## SECRETS
-sudo chmod -R o=       /var/music/release/secrets/prod/auth/db && \
-sudo chgrp -R mysql    /var/music/release/secrets/prod/auth/db && \
-sudo chmod -R o=       /var/music/release/secrets/prod/ssl/db && \
-sudo chgrp -R mysql    /var/music/release/secrets/prod/ssl/db && \
-sudo chmod -R o=       /var/music/release/secrets/prod/ssl/web && \
-sudo chgrp -R www-data /var/music/release/secrets/prod/ssl/web
+sudo chmod -R o=       /var/music/release/secret/prod/auth/db && \
+sudo chgrp -R mysql    /var/music/release/secret/prod/auth/db && \
+sudo chmod -R o=       /var/music/release/secret/prod/ssl/db && \
+sudo chgrp -R mysql    /var/music/release/secret/prod/ssl/db && \
+sudo chmod -R o=       /var/music/release/secret/prod/ssl/web && \
+sudo chgrp -R www-data /var/music/release/secret/prod/ssl/web
 
 ## STATIC
 sudo chmod -R o= /var/music/release/static && \
