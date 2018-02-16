@@ -216,9 +216,19 @@ RUN set -ex \
 
 RUN \
 	docker-php-ext-install mysqli && \
-	docker-php-ext-enable mysqli && \
-	curl -sS https://getcomposer.org/installer | php && \
-	mv composer.phar /usr/local/bin/composer
+	docker-php-ext-enable mysqli
+
+#	curl -sS https://getcomposer.org/installer | php && \
+#	mv composer.phar /usr/local/bin/composer && \
+#	apt-get update && \
+#	apt-get install -y --no-install-recommends emacs libzip-dev && \
+#	pecl install zip && \
+#	docker-php-ext-enable zip
+
+#RUN \
+#	adduser --disabled-password --gecos "" laravel && \
+#	su - laravel -c 'composer global require "laravel/installer"' && \
+#	su - laravel -c 'echo "PATH=$PATH:~/.composer/vendor/bin" >> ~/.bashrc'
 
 COPY ./docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 

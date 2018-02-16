@@ -4,7 +4,7 @@ FROM debian:stretch-slim
 RUN \
 	set -x && \
 	apt-get update && \
-	apt-get install -y --no-install-recommends nginx gettext-base netcat && \
+	apt-get install -y --no-install-recommends nginx gettext-base netcat emacs && \
 	mkdir /var/www/code && \
 	mkdir /var/www/code/php && \
 	mkdir /var/www/resource && \
