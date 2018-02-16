@@ -14,9 +14,8 @@ RUN \
 	rm -rf /var/www/html && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	rm /etc/nginx/sites-enabled/default
-
-COPY ./docker/web/nginx.conf /etc/nginx/default.conf.raw
+	rm /etc/nginx/sites-enabled/default && \
+	mkdir /etc/nginx/conf_app
 
 # Define mountable directories.
 VOLUME ["/etc/nginx/certs", "/var/log/nginx", "/var/www"]
